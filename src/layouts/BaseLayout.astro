@@ -1,0 +1,41 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description = 'kaynine의 개발 블로그' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body class="bg-gray-950 text-gray-100 min-h-screen">
+    <header class="border-b border-gray-800">
+      <nav class="max-w-3xl mx-auto px-4 py-5 flex items-center justify-between">
+        <a href="/" class="text-lg font-bold text-white hover:text-indigo-400 transition-colors">
+          kaynine.dev
+        </a>
+        <div class="flex gap-6 text-sm text-gray-400">
+          <a href="/" class="hover:text-white transition-colors">Posts</a>
+          <a href="https://github.com/kaynine" target="_blank" class="hover:text-white transition-colors">GitHub</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-4 py-12">
+      <slot />
+    </main>
+
+    <footer class="border-t border-gray-800 mt-20">
+      <div class="max-w-3xl mx-auto px-4 py-6 text-center text-sm text-gray-600">
+        © {new Date().getFullYear()} kaynine
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,45 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const posts = await getCollection('blog');
+const sorted = posts;
+---
+
+<BaseLayout title="kaynine.dev">
+  <section>
+    <h1 class="text-3xl font-bold mb-2">Posts</h1>
+    <p class="text-gray-400 mb-10 text-sm">총 {sorted.length}개의 글</p>
+
+    {sorted.length === 0 ? (
+      <p class="text-gray-500">아직 게시된 글이 없어요.</p>
+    ) : (
+      <ul class="space-y-8">
+        {sorted.map((post) => {
+          const props = post.data.properties;
+          const title = props?.Name?.title?.[0]?.plain_text ?? '제목 없음';
+          const tags: string[] = props?.Tags?.multi_select?.map((t: { name: string }) => t.name) ?? [];
+
+          return (
+            <li>
+              <a href={`/posts/${post.id}`} class="group block">
+                <article class="border border-gray-800 rounded-xl p-6 hover:border-indigo-500 transition-colors">
+                  <div class="flex items-center gap-2 mb-3 flex-wrap">
+                    {tags.map((tag) => (
+                      <span class="text-xs bg-indigo-900/50 text-indigo-300 px-2 py-0.5 rounded-full">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <h2 class="text-xl font-semibold group-hover:text-indigo-400 transition-colors mb-2">
+                    {title}
+                  </h2>
+                </article>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    )}
+  </section>
+</BaseLayout>

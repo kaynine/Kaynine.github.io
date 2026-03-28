@@ -1,0 +1,43 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const props = post.data.properties;
+const title = props?.Name?.title?.[0]?.plain_text ?? '제목 없음';
+const tags: string[] = props?.Tags?.multi_select?.map((t: { name: string }) => t.name) ?? [];---
+
+<BaseLayout title={`${title} | kaynine.dev`}>
+  <article>
+    <header class="mb-10">
+      <div class="flex items-center gap-2 mb-4 flex-wrap">
+        {tags.map((tag) => (
+          <span class="text-xs bg-indigo-900/50 text-indigo-300 px-2 py-0.5 rounded-full">
+            {tag}
+          </span>
+        ))}
+      </div>
+      <h1 class="text-3xl font-bold mb-3 leading-tight">{title}</h1>
+    </header>
+
+    <div class="prose prose-invert prose-indigo max-w-none
+      prose-headings:font-bold
+      prose-code:bg-gray-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-indigo-300
+      prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-800
+      prose-a:text-indigo-400 prose-a:no-underline hover:prose-a:underline
+      prose-blockquote:border-indigo-500 prose-blockquote:text-gray-400">
+      <Content />
+    </div>
+
+    <footer class="mt-16 pt-6 border-t border-gray-800">
+      <a href="/" class="text-sm text-indigo-400 hover:underline">← 목록으로</a>
+    </footer>
+  </article>
+</BaseLayout>
