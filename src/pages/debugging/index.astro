@@ -1,0 +1,62 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const posts = await getCollection('debugging');
+const sorted = posts.sort((a, b) => {
+  const titleA = a.data.properties?.Name?.title?.[0]?.plain_text ?? '';
+  const titleB = b.data.properties?.Name?.title?.[0]?.plain_text ?? '';
+  return titleA.localeCompare(titleB, 'ko');
+});
+---
+
+<BaseLayout title="Debugging | kaynine.dev">
+  <section>
+    <header class="page-header">
+      <h1 class="page-title">Debugging</h1>
+      <p class="page-subtitle">총 {sorted.length}개의 글</p>
+    </header>
+
+    {sorted.length === 0 ? (
+      <p class="empty-state">아직 게시된 글이 없어요.</p>
+    ) : (
+      <ul class="post-list">
+        {sorted.map((post) => {
+          const props = post.data.properties;
+          const title = props?.Name?.title?.[0]?.plain_text ?? '제목 없음';
+          const tags: string[] = props?.Tags?.multi_select?.map((t: { name: string }) => t.name) ?? [];
+
+          return (
+            <li class="post-item">
+              <a href={`/debugging/${post.id}`} class="post-link">
+                {tags.length > 0 && (
+                  <div class="post-tags">
+                    {tags.map((tag) => (
+                      <span class="tag">{tag}</span>
+                    ))}
+                  </div>
+                )}
+                <h2 class="post-item-title">{title}</h2>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .page-header { margin-bottom: 2.5rem; }
+  .page-title { font-size: 1.75rem; font-weight: 600; color: var(--text); margin-bottom: 0.4rem; letter-spacing: -0.02em; }
+  .page-subtitle { font-size: 0.875rem; color: var(--muted); }
+  .empty-state { color: var(--muted); font-size: 0.9375rem; }
+  .post-list { list-style: none; display: flex; flex-direction: column; }
+  .post-item { border-bottom: 1px solid var(--border); }
+  .post-item:first-child { border-top: 1px solid var(--border); }
+  .post-link { display: block; padding: 1.25rem 0.5rem; text-decoration: none; border-radius: 6px; transition: background-color 0.15s ease, padding-left 0.15s ease; }
+  .post-link:hover { background-color: var(--bg-subtle); padding-left: 1rem; }
+  .post-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.5rem; }
+  .post-item-title { font-size: 1.0625rem; font-weight: 600; color: var(--text); line-height: 1.4; transition: color 0.15s ease; }
+  .post-link:hover .post-item-title { color: var(--accent); }
+</style>

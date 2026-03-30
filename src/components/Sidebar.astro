@@ -1,0 +1,58 @@
+---
+const currentPath = Astro.url.pathname;
+
+const navItems = [
+  { href: '/', label: 'Settings' },
+  { href: '/code-and-node', label: 'Code & Node' },
+  { href: '/customizing', label: 'Customizing' },
+  { href: '/debugging', label: 'Debugging' },
+];
+---
+
+<aside class="sidebar">
+  <div class="sidebar__brand">
+    <a href="/">kaynine.dev</a>
+  </div>
+
+  <nav class="sidebar__nav" aria-label="메인 내비게이션">
+    {navItems.map((item) => (
+      <a
+        href={item.href}
+        target={item.external ? '_blank' : undefined}
+        rel={item.external ? 'noopener noreferrer' : undefined}
+        aria-current={!item.external && currentPath === item.href ? 'page' : undefined}
+      >
+        {item.label}
+      </a>
+    ))}
+  </nav>
+
+  <div class="sidebar__actions">
+    <button
+      id="theme-toggle"
+      class="theme-toggle"
+      title="테마 전환"
+      aria-label="다크/라이트 모드 전환"
+    >
+      <!-- Sun icon (shown in dark mode) -->
+      <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+      </svg>
+      <!-- Moon icon (shown in light mode) -->
+      <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+  </div>
+</aside>
+
+<script>
+  const btn = document.getElementById('theme-toggle');
+  btn?.addEventListener('click', () => {
+    const current = document.documentElement.dataset.theme;
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem('theme', next); } catch (_) {}
+  });
+</script>

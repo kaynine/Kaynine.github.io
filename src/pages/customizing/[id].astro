@@ -4,7 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import '../../styles/prose.css';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const posts = await getCollection('customizing');
   return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
 }
 
@@ -34,7 +34,7 @@ const tags: string[] = props?.Tags?.multi_select?.map((t: { name: string }) => t
     </div>
 
     <footer class="article-footer">
-      <a href="/" class="back-link">← 목록으로</a>
+      <a href="/customizing" class="back-link">← 목록으로</a>
     </footer>
   </article>
 </BaseLayout>

@@ -34,7 +34,9 @@ jobs:
         env:
           NOTION_API_SECRET: ${{ secrets.NOTION_API_SECRET }}
           DATABASE_ID: ${{ secrets.DATABASE_ID }}
-          CUSTOM_DOMAIN: kaynine.github.io
+          DATABASE_ID_CUSTOMIZING: ${{ secrets.DATABASE_ID_CUSTOMIZING }}
+          DATABASE_ID_CODENODE: ${{ secrets.DATABASE_ID_CODENODE }}
+          DATABASE_ID_DEBUGGING: ${{ secrets.DATABASE_ID_DEBUGGING }}
         run: npm run build
 
       - name: Upload artifact
