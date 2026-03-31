@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "node -e \"try{require('fs').rmSync('.astro/data-store.json')}catch(_){}\" && astro dev",
-    "build": "astro build && node scripts/download-images.mjs",
+    "build": "node -e \"try{require('fs').rmSync('.astro/data-store.json')}catch(_){}\" && astro build && node scripts/download-images.mjs",
     "preview": "astro preview"
   },
   "dependencies": {
