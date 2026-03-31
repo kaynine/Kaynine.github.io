@@ -33,7 +33,9 @@ console.log(`🖼️  이미지 ${urlMap.size}개 다운로드 중...`);
 let count = 0;
 for (const [url] of urlMap) {
   try {
-    const res = await fetch(url);
+    // HTML 속성 안의 &amp; → & 디코딩 후 fetch
+    const fetchUrl = url.replace(/&amp;/g, '&');
+    const res = await fetch(fetchUrl);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
     const contentType = res.headers.get('content-type') ?? 'image/png';
