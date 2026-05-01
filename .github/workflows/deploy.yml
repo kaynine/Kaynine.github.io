@@ -40,7 +40,12 @@ jobs:
           DATABASE_ID_CUSTOMIZING: ${{ secrets.DATABASE_ID_CUSTOMIZING }}
           DATABASE_ID_CODENODE: ${{ secrets.DATABASE_ID_CODENODE }}
           DATABASE_ID_DEBUGGING: ${{ secrets.DATABASE_ID_DEBUGGING }}
-        run: npm run build
+        run: |
+          for i in 1 2 3; do
+            npm run build && break
+            echo "Build attempt $i failed, retrying in 20s..."
+            sleep 20
+          done
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
