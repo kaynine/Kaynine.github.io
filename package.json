@@ -8,7 +8,7 @@
     "preview": "astro preview"
   },
   "overrides": {
-    "@notionhq/client": "^5.22.0"
+    "@notionhq/client": "^3.0.4"
   },
   "dependencies": {
     "astro": "^5.0.0",
