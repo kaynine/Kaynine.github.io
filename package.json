@@ -7,6 +7,9 @@
     "build": "node -e \"try{require('fs').rmSync('.astro/data-store.json')}catch(_){}\" && astro build && node scripts/download-images.mjs",
     "preview": "astro preview"
   },
+  "overrides": {
+    "@notionhq/client": "^5.22.0"
+  },
   "dependencies": {
     "astro": "^5.0.0",
     "glob": "^13.0.6",
